@@ -83,6 +83,8 @@ footer{margin-top:28px;color:var(--mut);font-size:12px;text-align:center}
 
 <section>
  <h2><span class="n">3</span>クラスごとのリンクを作る</h2>
+ <label for="form">生徒用フォームのURL（手順1の実行ログの「生徒用フォーム」）</label>
+ <input id="form" placeholder="https://docs.google.com/forms/d/e/……/viewform">
  <label for="feed">手順2でコピーしたURL</label>
  <input id="feed" placeholder="https://docs.google.com/spreadsheets/d/e/……/pub?gid=……&amp;single=true&amp;output=csv">
  <div class="top" style="margin-top:10px"><button class="y" id="make">リンクを作る</button><button id="test">回答を読めるか確かめる</button></div>
@@ -166,15 +168,20 @@ function make(){
  if(!/\/spreadsheets\/d\/e\//.test(f)){msg('「ウェブに公開」で出るURLかどうか、確かめてください。','ng');}
  else msg('リンクができました。クラスルームなどで生徒に配ってください。','ok');
  const box=$('links');box.innerHTML='';
+ const fm=$('form').value.trim();
+ if(fm){const d=document.createElement('div');d.className='lk';
+  d.innerHTML='<b>フォーム</b><input readonly><button class="sm">コピー</button><a target="_blank" rel="noopener">開く</a>';
+  d.querySelector('input').value=fm;d.querySelector('a').href=fm;d.querySelector('button').onclick=e=>copy(fm,e.target);box.appendChild(d);}
  [['学年全体','']].concat(classes().map(c=>[c,c])).forEach(([nm,c])=>{
   const u=link(f,c),d=document.createElement('div');d.className='lk';
   d.innerHTML='<b></b><input readonly><button class="sm">コピー</button><a target="_blank" rel="noopener">開く</a>';
   d.querySelector('b').textContent=nm;d.querySelector('input').value=u;d.querySelector('a').href=u;
   d.querySelector('button').onclick=e=>copy(u,e.target);box.appendChild(d);});
  const all=document.createElement('button');all.textContent='全部まとめてコピー';all.className='sm';
- all.onclick=e=>copy([...box.querySelectorAll('.lk')].map(x=>x.querySelector('b').textContent+'\n'+x.querySelector('input').value).join('\n\n'),e.target);
+ all.onclick=e=>copy([...box.querySelectorAll('.lk')].map(x=>{const n=x.querySelector('b').textContent;return (n==='フォーム'?'生徒用フォーム':n==='学年全体'?'アプリ（学年全体）':'アプリ（'+n+'）')+'\n'+x.querySelector('input').value;}).join('\n\n'),e.target);
  box.appendChild(all);}
 $('make').onclick=make;
+$('form').addEventListener('input',()=>{if($('links').children.length)make();});
 $('test').onclick=async()=>{
  const f=normFeed($('feed').value);if(!f){msg('URLを貼りつけてください。','ng');return;}
  msg('読みに行っています…');
