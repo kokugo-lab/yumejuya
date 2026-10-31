@@ -539,6 +539,7 @@ ol.fr li{margin-bottom:6px}
   <p class="hint">※ iPhone・iPad では、はじめに「センサーの使用」を許可してください。<br>
     傾きが使えない端末では、画面を指でなぞって見回せます。</p>
   <p class="hint" id="tfeed"></p>
+  <p class="hint" id="tlinks" style="display:none"><a href="./?demo" style="color:#e8c86a">デモを見る</a>　／　<a href="./setup.html" style="color:#e8c86a">先生の方へ：準備ページ</a></p>
 </div>
 <script>
 
@@ -1599,8 +1600,16 @@ function pollFeed(){
    if(feedFail>=10)stopFeed(true);
    return -1;});}
 
+/* 「ウェブに公開」のURLを、CSVで読めるURLにそろえる（pubhtml などを貼っても動くように） */
+function normFeed(u){
+ u=(u||'').trim();if(!u)return '';
+ if(/\/spreadsheets\/d\/e\//.test(u)){
+  u=u.replace(/\/pubhtml(\b|$)/,'/pub$1');
+  if(!/output=csv/.test(u))u+=(u.indexOf('?')>=0?'&':'?')+'output=csv';
+  u=u.replace(/output=(?!csv)[a-z]+/,'output=csv');}
+ return u;}
 function startFeed(u,quiet){
- const url=(u||'').trim();
+ const url=normFeed(u);
  if(feedTimer){clearInterval(feedTimer);feedTimer=null;}
  feedUrl=url;feedFail=0;feedAt=0;
  try{url?localStorage.setItem(LF,url):localStorage.removeItem(LF);}catch(e){}
@@ -1620,6 +1629,7 @@ function stopFeed(auto){
   '何度も読みに行けないので、自動取りこみを止めました。「このURLで自動取りこみ」でやり直せます。':
   '自動取りこみをやめました。');}
 
+setTimeout(()=>{try{if(!feedFromQuery()&&!DEMO_ON)document.getElementById('tlinks').style.display='';}catch(e){}},0);
 function feedFromQuery(){
  try{const m=/[?&]feed=([^&]+)/.exec((location&&location.search)||'');
   return m?decodeURIComponent(m[1]):'';}catch(e){return '';}}

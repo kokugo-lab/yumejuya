@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>言葉の星座 準備ページ</title>
+<style>
+:root{--bg:#0b1226;--card:#121c38;--line:#2a3a64;--ink:#eef2fb;--mut:#a9b6d3;--gold:#e8c86a;--gold2:#c9a34a;--ok:#8fe0b0;--ng:#ff9a8a}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#1d2b55,var(--bg));color:var(--ink);
+ font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px 64px}
+header p.k{margin:0;color:var(--gold);letter-spacing:.3em;font-size:13px}
+h1{margin:4px 0 6px;font-size:clamp(22px,5vw,30px);letter-spacing:.08em;font-weight:600}
+header p.s{margin:0 0 18px;color:var(--mut);font-size:14px}
+.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+a.btn,button{font:inherit;cursor:pointer;border-radius:999px;border:1px solid var(--line);background:#1a2650;color:var(--ink);
+ padding:8px 16px;font-size:14px;text-decoration:none;display:inline-block}
+a.btn.y,button.y{background:var(--gold);color:#241c08;border-color:var(--gold);font-weight:600}
+button.sm{padding:4px 12px;font-size:12.5px}
+section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;margin:18px 0}
+section h2{margin:0 0 8px;font-size:18px;display:flex;align-items:center;gap:10px;font-weight:600}
+section h2 .n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#241c08;display:flex;align-items:center;justify-content:center;font-size:15px}
+ol,ul{padding-left:1.3em;margin:6px 0}
+li{margin:3px 0}
+.mut{color:var(--mut);font-size:13.5px}
+label{display:block;font-size:13.5px;color:var(--mut);margin:10px 0 4px}
+input,textarea{width:100%;font:inherit;font-size:14px;color:var(--ink);background:#0d1630;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+textarea{min-height:76px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>div{flex:1;min-width:200px}
+pre{margin:10px 0 0;max-height:260px;overflow:auto;background:#081022;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12px;line-height:1.55;white-space:pre}
+code{background:#0d1630;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.92em}
+.msg{margin:10px 0 0;font-size:14px}.msg.ok{color:var(--ok)}.msg.ng{color:var(--ng)}
+.links{margin-top:12px;display:grid;gap:8px}
+.lk{display:flex;align-items:center;gap:10px;background:#0d1630;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.lk b{flex:none;min-width:5.5em;color:var(--gold);font-weight:600;font-size:14px}
+.lk input{flex:1;min-width:0;padding:6px 8px;font-size:12px;background:transparent;border:0}
+.lk a{flex:none;color:var(--mut);font-size:12.5px}
+.note{border-left:3px solid var(--gold2);padding:2px 0 2px 12px;margin:10px 0;color:var(--mut);font-size:13.5px}
+a{color:var(--gold)}
+footer{margin-top:28px;color:var(--mut);font-size:12px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <p class="k">言 葉 の 星 座</p>
+ <h1>先生用 準備ページ</h1>
+ <p class="s">夏目漱石『夢十夜』第一夜。生徒が書いた答えの言葉が、夜空の星になります。<br>Googleフォームとスプレッドシートを用意して、クラスごとのリンクを作ります（所要 約15分）。</p>
+ <div class="top"><a class="btn y" id="demo" href="./?demo" target="_blank">デモを見る（サンプル20人分）</a></div>
+</header>
+
+<section>
+ <h2><span class="n">1</span>フォームと回答シートを作る</h2>
+ <p class="mut">Google Apps Script で、必要な質問のそろったフォームと回答用スプレッドシートを自動で作ります。</p>
+ <div class="row">
+  <div><label for="cls">クラス（カンマ区切り）</label><input id="cls" value="1組,2組,3組,4組,5組,6組"></div>
+  <div style="max-width:160px"><label for="maxno">出席番号の最大</label><input id="maxno" type="number" min="1" max="99" value="42"></div>
+ </div>
+ <label for="ftitle">フォームの題名</label><input id="ftitle" value="夢十夜　第一夜　言葉の星座">
+ <ol>
+  <li><a href="https://script.google.com/home/projects/create" target="_blank" rel="noopener">script.google.com</a> で「新しいプロジェクト」を開く</li>
+  <li>はじめから入っている文字を消して、下のコードを貼りつけて保存</li>
+  <li>上の関数名が <code>createKotobaSeizaForm</code> になっていることを確かめて「実行」。アクセスの許可を求められたら許可する</li>
+  <li>下の「実行ログ」に、<b>生徒用フォームのURL</b>と<b>回答シートのURL</b>が出ます</li>
+ </ol>
+ <button class="y" id="copyGas">コードをコピー</button>
+ <pre id="gas"></pre>
+ <p class="note">質問の題名「問一」「問二」「クラス」「出席番号」「ニックネーム」は、アプリが列を見分けるのに使います。問いの文を変えるときは、題名を「問一」「問二」で始めてください。</p>
+</section>
+
+<section>
+ <h2><span class="n">2</span>回答シートを「ウェブに公開」する</h2>
+ <ol>
+  <li>手順1でできた回答シートを開く</li>
+  <li>メニューの「ファイル」→「共有」→「ウェブに公開」</li>
+  <li>「リンク」で、<b>回答が入るシート（フォームの回答 1）</b>と<b>カンマ区切り形式（.csv）</b>を選んで「公開」</li>
+  <li>表示されたURL（…/pub?…output=csv）をコピー</li>
+ </ol>
+ <p class="note">公開されるのは回答シートの内容です。アプリにはニックネームだけが表示され、出席番号は表示されません。</p>
+</section>
+
+<section>
+ <h2><span class="n">3</span>クラスごとのリンクを作る</h2>
+ <label for="feed">手順2でコピーしたURL</label>
+ <input id="feed" placeholder="https://docs.google.com/spreadsheets/d/e/……/pub?gid=……&amp;single=true&amp;output=csv">
+ <div class="top" style="margin-top:10px"><button class="y" id="make">リンクを作る</button><button id="test">回答を読めるか確かめる</button></div>
+ <p class="msg" id="msg"></p>
+ <div class="links" id="links"></div>
+</section>
+
+<section>
+ <h2><span class="n">4</span>授業で配る</h2>
+ <ul>
+  <li>生徒には、<b>フォームのURL</b>と<b>自分のクラスのリンク</b>を配ります（クラスルームなど）</li>
+  <li>生徒はフォームで「クラス・出席番号・ニックネーム・問一・問二」を送信します。数秒〜十秒ほどで夜空に星が増えます</li>
+  <li>アプリで空に入ると「あなたは だれ？」が出ます。フォームと同じ出席番号を選ぶと、自分の言葉の星が金色になります</li>
+  <li>ミッション：問一の空・問二の空で、素敵だと思った解答を「☆素敵」で2つずつ選び、書き写す画面からプリントに書き写します</li>
+ </ul>
+ <p class="note">回答はフォームの「回答」タブや、回答シートで確認できます。アプリ内で選んだ解答や流れ星の記録は、生徒の端末にだけ保存されます。</p>
+</section>
+
+<footer>言葉の星座 ― three.js（MIT License）／ TinySegmenter（BSD License）を使用しています</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const APP=new URL('./',location.href).href.replace(/setup\.html.*$/,'');
+$('demo').href=APP+'?demo';
+const esc=s=>String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+function classes(){return $('cls').value.split(/[,、，\s]+/).map(s=>s.trim()).filter(Boolean);}
+function gas(){
+ const cl=classes(),mx=Math.max(1,Math.min(99,parseInt($('maxno').value,10)||42)),t=$('ftitle').value.trim()||'言葉の星座';
+ return `/** 言葉の星座：フォームと回答シートを作る */
+function createKotobaSeizaForm() {
+  var form = FormApp.create('${esc(t)}');
+  form.setDescription('自分の考えを書いて送信しよう。送った言葉は、クラスの夜空の星になります。\\nアプリに表示されるのはニックネームだけです。');
+  form.setCollectEmail(false);
+
+  form.addListItem().setTitle('クラス').setRequired(true)
+    .setChoiceValues([${cl.map(c=>"'"+esc(c)+"'").join(', ')}]);
+
+  var nos = [];
+  for (var i = 1; i <= ${mx}; i++) nos.push(i + '番');
+  form.addListItem().setTitle('出席番号').setRequired(true).setChoiceValues(nos)
+    .setHelpText('アプリには表示されません（先生だけが見られます）');
+
+  form.addTextItem().setTitle('ニックネーム').setRequired(true)
+    .setHelpText('夜空にはこの名前で表示されます。本名は書かないでください');
+
+  form.addParagraphTextItem().setRequired(true)
+    .setTitle('問一　女はなぜ「百年待っていてください。」と言ったのか、できる限り詳しく説明しましょう。');
+  form.addParagraphTextItem().setRequired(true)
+    .setTitle('問二　男はなぜ「百年はもう来ていたんだな。」と気づいたのか、できる限り詳しく説明しましょう。');
+
+  var ss = SpreadsheetApp.create('${esc(t)}（回答）');
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+
+  Logger.log('生徒用フォーム： ' + form.getPublishedUrl());
+  Logger.log('フォームの編集： ' + form.getEditUrl());
+  Logger.log('回答シート　　： ' + ss.getUrl());
+}
+`;}
+function showGas(){$('gas').textContent=gas();}
+['cls','maxno','ftitle'].forEach(id=>$(id).addEventListener('input',()=>{showGas();if($('links').children.length)make();}));
+showGas();
+async function copy(t,btn){try{await navigator.clipboard.writeText(t);}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();}
+ if(btn){const o=btn.textContent;btn.textContent='コピーしました';setTimeout(()=>btn.textContent=o,1400);}}
+$('copyGas').onclick=e=>copy(gas(),e.target);
+
+/* 貼られたURLを、CSVで読めるURLにそろえる */
+function normFeed(u){
+ u=(u||'').trim();if(!u)return '';
+ if(/\/spreadsheets\/d\/e\//.test(u)){
+  u=u.replace(/\/pubhtml(\b|$)/,'/pub$1');
+  if(!/output=csv/.test(u))u+=(u.includes('?')?'&':'?')+'output=csv';
+  u=u.replace(/output=(?!csv)[a-z]+/,'output=csv');}
+ return u;}
+function msg(t,c){const m=$('msg');m.textContent=t;m.className='msg'+(c?' '+c:'');}
+function link(feed,cls){return APP+'?feed='+encodeURIComponent(feed)+(cls?'&cls='+encodeURIComponent(cls):'');}
+function make(){
+ const f=normFeed($('feed').value);
+ if(!f){msg('手順2のURLを貼りつけてください。','ng');return;}
+ if(/\/spreadsheets\/d\/(?!e\/)/.test(f)){msg('これは編集用のURLです。「ウェブに公開」で出るURL（…/d/e/…/pub?…）を貼ってください。','ng');return;}
+ if(!/\/spreadsheets\/d\/e\//.test(f)){msg('「ウェブに公開」で出るURLかどうか、確かめてください。','ng');}
+ else msg('リンクができました。クラスルームなどで生徒に配ってください。','ok');
+ const box=$('links');box.innerHTML='';
+ [['学年全体','']].concat(classes().map(c=>[c,c])).forEach(([nm,c])=>{
+  const u=link(f,c),d=document.createElement('div');d.className='lk';
+  d.innerHTML='<b></b><input readonly><button class="sm">コピー</button><a target="_blank" rel="noopener">開く</a>';
+  d.querySelector('b').textContent=nm;d.querySelector('input').value=u;d.querySelector('a').href=u;
+  d.querySelector('button').onclick=e=>copy(u,e.target);box.appendChild(d);});
+ const all=document.createElement('button');all.textContent='全部まとめてコピー';all.className='sm';
+ all.onclick=e=>copy([...box.querySelectorAll('.lk')].map(x=>x.querySelector('b').textContent+'\n'+x.querySelector('input').value).join('\n\n'),e.target);
+ box.appendChild(all);}
+$('make').onclick=make;
+$('test').onclick=async()=>{
+ const f=normFeed($('feed').value);if(!f){msg('URLを貼りつけてください。','ng');return;}
+ msg('読みに行っています…');
+ try{const r=await fetch(f+(f.includes('?')?'&':'?')+'t='+Date.now());if(!r.ok)throw new Error(r.status);
+  const t=await r.text();const head=(t.split(/\r?\n/)[0]||'');
+  const ok=['問一','問二'].every(k=>head.includes(k));
+  const rows=Math.max(0,t.trim().split(/\r?\n/).length-1);
+  if(/<html/i.test(t))msg('表の形で読めませんでした。CSV形式で公開しているか確かめてください。','ng');
+  else msg((ok?'読めました。':'読めましたが、「問一」「問二」の列が見つかりません。')+'　いまの回答：'+rows+'件',ok?'ok':'ng');}
+ catch(e){msg('読みに行けませんでした。「ウェブに公開」をしたか、URLが正しいかを確かめてください。','ng');}};
+</script>
+</body>
+</html>
