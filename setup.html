@@ -38,7 +38,6 @@ code{background:#0d1630;border:1px solid var(--line);border-radius:6px;padding:1
 .lk a{flex:none;color:var(--mut);font-size:12.5px}
 .note{border-left:3px solid var(--gold2);padding:2px 0 2px 12px;margin:10px 0;color:var(--mut);font-size:13.5px}
 a{color:var(--gold)}
-details{margin-top:8px}summary{cursor:pointer}
 footer{margin-top:28px;color:var(--mut);font-size:12px;text-align:center}
 </style>
 </head>
@@ -47,40 +46,59 @@ footer{margin-top:28px;color:var(--mut);font-size:12px;text-align:center}
 <header>
  <p class="k">言 葉 の 星 座</p>
  <h1>先生用 準備ページ</h1>
- <p class="s">3つの手順で、クラスごとのリンクができます。</p>
- <div class="top"><a class="btn" id="demo" href="./?demo" target="_blank">デモを見る</a></div>
+ <p class="s">夏目漱石『夢十夜』第一夜。生徒が書いた答えの言葉が、夜空の星になります。<br>Googleフォームとスプレッドシートを用意して、クラスごとのリンクを作ります（所要 約15分）。</p>
+ <div class="top"><a class="btn y" id="demo" href="./?demo" target="_blank">デモを見る（サンプル20人分）</a></div>
 </header>
 
 <section>
- <h2><span class="n">1</span>フォームを作る</h2>
+ <h2><span class="n">1</span>フォームと回答シートを作る</h2>
+ <p class="mut">Google Apps Script で、必要な質問のそろったフォームと回答用スプレッドシートを自動で作ります。</p>
+ <div class="row">
+  <div><label for="cls">クラス（カンマ区切り）</label><input id="cls" value="1組,2組,3組,4組,5組,6組"></div>
+  <div style="max-width:160px"><label for="maxno">出席番号の最大</label><input id="maxno" type="number" min="1" max="99" value="42"></div>
+ </div>
+ <label for="ftitle">フォームの題名</label><input id="ftitle" value="夢十夜　第一夜　言葉の星座">
  <ol>
-  <li><button class="y sm" id="copyGas">コードをコピー</button></li>
-  <li><a href="https://script.google.com/home/projects/create" target="_blank" rel="noopener">Apps Script</a> を開き、中身を消して貼りつけ →「実行」→ 許可</li>
-  <li>実行ログに出た<b>フォーム</b>と<b>回答シート</b>のURLを控える</li>
+  <li><a href="https://script.google.com/home/projects/create" target="_blank" rel="noopener">script.google.com</a> で「新しいプロジェクト」を開く</li>
+  <li>はじめから入っている文字を消して、下のコードを貼りつけて保存</li>
+  <li>上の関数名が <code>createKotobaSeizaForm</code> になっていることを確かめて「実行」。アクセスの許可を求められたら許可する</li>
+  <li>下の「実行ログ」に、<b>生徒用フォームのURL</b>と<b>回答シートのURL</b>が出ます</li>
  </ol>
- <details><summary class="mut">クラス・出席番号・題名を変える</summary>
-  <div class="row">
-   <div><label for="cls">クラス（カンマ区切り）</label><input id="cls" value="1組,2組,3組,4組,5組,6組"></div>
-   <div style="max-width:140px"><label for="maxno">出席番号の最大</label><input id="maxno" type="number" min="1" max="99" value="42"></div>
-  </div>
-  <label for="ftitle">フォームの題名</label><input id="ftitle" value="夢十夜　第一夜　言葉の星座">
-  <pre id="gas"></pre>
- </details>
+ <button class="y" id="copyGas">コードをコピー</button>
+ <pre id="gas"></pre>
+ <p class="note">質問の題名「問一」「問二」「クラス」「出席番号」「ニックネーム」は、アプリが列を見分けるのに使います。問いの文を変えるときは、題名を「問一」「問二」で始めてください。</p>
 </section>
 
 <section>
- <h2><span class="n">2</span>回答シートを公開する</h2>
- <p>回答シートで「ファイル」→「共有」→「ウェブに公開」→ <b>カンマ区切り形式（.csv）</b>で公開し、出たURLをコピー</p>
+ <h2><span class="n">2</span>回答シートを「ウェブに公開」する</h2>
+ <ol>
+  <li>手順1でできた回答シートを開く</li>
+  <li>メニューの「ファイル」→「共有」→「ウェブに公開」</li>
+  <li>「リンク」で、<b>回答が入るシート（フォームの回答 1）</b>と<b>カンマ区切り形式（.csv）</b>を選んで「公開」</li>
+  <li>表示されたURL（…/pub?…output=csv）をコピー</li>
+ </ol>
+ <p class="note">公開されるのは回答シートの内容です。アプリにはニックネームだけが表示され、出席番号は表示されません。</p>
 </section>
 
 <section>
- <h2><span class="n">3</span>URLを貼る</h2>
- <input id="feed" placeholder="ここに公開URLを貼りつけ">
+ <h2><span class="n">3</span>クラスごとのリンクを作る</h2>
+ <label for="feed">手順2でコピーしたURL</label>
+ <input id="feed" placeholder="https://docs.google.com/spreadsheets/d/e/……/pub?gid=……&amp;single=true&amp;output=csv">
+ <div class="top" style="margin-top:10px"><button class="y" id="make">リンクを作る</button><button id="test">回答を読めるか確かめる</button></div>
  <p class="msg" id="msg"></p>
  <div class="links" id="links"></div>
 </section>
 
-<p class="mut" style="text-align:center">生徒には、フォームのURLと自分のクラスのリンクを配ります。</p>
+<section>
+ <h2><span class="n">4</span>授業で配る</h2>
+ <ul>
+  <li>生徒には、<b>フォームのURL</b>と<b>自分のクラスのリンク</b>を配ります（クラスルームなど）</li>
+  <li>生徒はフォームで「クラス・出席番号・ニックネーム・問一・問二」を送信します。数秒〜十秒ほどで夜空に星が増えます</li>
+  <li>アプリで空に入ると「あなたは だれ？」が出ます。フォームと同じ出席番号を選ぶと、自分の言葉の星が金色になります</li>
+  <li>ミッション：問一の空・問二の空で、素敵だと思った解答を「☆素敵」で2つずつ選び、書き写す画面からプリントに書き写します</li>
+ </ul>
+ <p class="note">回答はフォームの「回答」タブや、回答シートで確認できます。アプリ内で選んだ解答や流れ星の記録は、生徒の端末にだけ保存されます。</p>
+</section>
 
 <footer>言葉の星座 ― three.js（MIT License）／ TinySegmenter（BSD License）を使用しています</footer>
 </div>
@@ -142,10 +160,10 @@ function msg(t,c){const m=$('msg');m.textContent=t;m.className='msg'+(c?' '+c:''
 function link(feed,cls){return APP+'?feed='+encodeURIComponent(feed)+(cls?'&cls='+encodeURIComponent(cls):'');}
 function make(){
  const f=normFeed($('feed').value);
- if(!f){msg('');$('links').innerHTML='';return;}
+ if(!f){msg('手順2のURLを貼りつけてください。','ng');return;}
  if(/\/spreadsheets\/d\/(?!e\/)/.test(f)){msg('これは編集用のURLです。「ウェブに公開」で出るURL（…/d/e/…/pub?…）を貼ってください。','ng');return;}
  if(!/\/spreadsheets\/d\/e\//.test(f)){msg('「ウェブに公開」で出るURLかどうか、確かめてください。','ng');}
- else{msg('リンクができました。確認しています…');test();}
+ else msg('リンクができました。クラスルームなどで生徒に配ってください。','ok');
  const box=$('links');box.innerHTML='';
  [['学年全体','']].concat(classes().map(c=>[c,c])).forEach(([nm,c])=>{
   const u=link(f,c),d=document.createElement('div');d.className='lk';
@@ -155,16 +173,17 @@ function make(){
  const all=document.createElement('button');all.textContent='全部まとめてコピー';all.className='sm';
  all.onclick=e=>copy([...box.querySelectorAll('.lk')].map(x=>x.querySelector('b').textContent+'\n'+x.querySelector('input').value).join('\n\n'),e.target);
  box.appendChild(all);}
-async function test(){
- const f=normFeed($('feed').value);if(!f)return;
+$('make').onclick=make;
+$('test').onclick=async()=>{
+ const f=normFeed($('feed').value);if(!f){msg('URLを貼りつけてください。','ng');return;}
+ msg('読みに行っています…');
  try{const r=await fetch(f+(f.includes('?')?'&':'?')+'t='+Date.now());if(!r.ok)throw new Error(r.status);
   const t=await r.text();const head=(t.split(/\r?\n/)[0]||'');
   const ok=['問一','問二'].every(k=>head.includes(k));
   const rows=Math.max(0,t.trim().split(/\r?\n/).length-1);
   if(/<html/i.test(t))msg('表の形で読めませんでした。CSV形式で公開しているか確かめてください。','ng');
-  else msg(ok?'リンクができました（いまの回答：約'+rows+'件）。':'リンクはできましたが、「問一」「問二」の列が見つかりません。',ok?'ok':'ng');}
- catch(e){msg('リンクはできました。まだ回答を読めません（公開の直後は数分かかることがあります）。','ng');}}
-$('feed').addEventListener('input',make);
+  else msg((ok?'読めました。':'読めましたが、「問一」「問二」の列が見つかりません。')+'　いまの回答：'+rows+'件',ok?'ok':'ng');}
+ catch(e){msg('読みに行けませんでした。「ウェブに公開」をしたか、URLが正しいかを確かめてください。','ng');}};
 </script>
 </body>
 </html>
